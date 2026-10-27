@@ -175,6 +175,10 @@ export const projects: Project[] = [
       alt: "Waypoint new tab page with pull requests, bookmarks and snippets",
     },
     links: [
+      {
+        label: "Website",
+        href: "https://usamakhaki.github.io/waypoint-chrome-ext/",
+      },
       { label: "Code", href: repo("waypoint-chrome-ext") },
       {
         label: "Video",
