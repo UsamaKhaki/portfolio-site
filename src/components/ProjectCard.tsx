@@ -53,8 +53,7 @@ export function ProjectCard({ project }: { project: Project }) {
               href={link.href}
               className="text-accent-ink inline-flex min-h-11 items-center gap-1 font-bold hover:underline hover:underline-offset-4"
             >
-              {link.label}
-              <span className="sr-only"> for {project.title}</span>{" "}
+              {link.label} <span className="sr-only">for {project.title}</span>{" "}
               <span aria-hidden="true">↗</span>
             </ExternalLink>
           ))}
