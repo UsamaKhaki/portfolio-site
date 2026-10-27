@@ -41,7 +41,7 @@ describe("ProjectCard", () => {
     expect(code).toHaveAttribute("rel", "noreferrer");
     expect(code).toHaveAccessibleName(/opens in a new tab/);
     expect(
-      screen.getByRole("link", { name: /Demo for Fleet Ops Dashboard/ }),
+      screen.getByRole("link", { name: /Video for Fleet Ops Dashboard/ }),
     ).toBeInTheDocument();
   });
 
@@ -52,5 +52,15 @@ describe("ProjectCard", () => {
 
     render(<ProjectCard project={bySlug("cited")} />);
     expect(screen.queryByText("Live")).not.toBeInTheDocument();
+  });
+
+  it("puts the live demo first for projects deployed as demos", () => {
+    render(<ProjectCard project={bySlug("cited")} />);
+
+    const links = screen.getAllByRole("link");
+    expect(
+      links.map((link) => link.textContent?.split(" for ")[0].trim()),
+    ).toEqual(["Live demo", "Code", "Video"]);
+    expect(links[0]).toHaveAttribute("href", "https://cited-gold.vercel.app");
   });
 });

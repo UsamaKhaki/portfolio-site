@@ -95,6 +95,16 @@ describe("projects", () => {
     ).toEqual(["tools-hubs"]);
   });
 
+  it("links live demos only to https Vercel deployments", () => {
+    for (const project of projects) {
+      for (const link of project.links.filter((l) => l.label === "Live demo")) {
+        expect(link.href, project.slug).toMatch(
+          /^https:\/\/[a-z0-9-]+\.vercel\.app$/,
+        );
+      }
+    }
+  });
+
   it("has a screenshot file in /public for every card", () => {
     for (const project of projects) {
       expect(

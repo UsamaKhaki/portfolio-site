@@ -38,7 +38,7 @@ export const projects: Project[] = [
     },
     links: [
       { label: "Code", href: repo("chat-with-db") },
-      { label: "Demo", href: demo("chat-with-db", "demo.webm") },
+      { label: "Video", href: demo("chat-with-db", "demo.webm") },
     ],
   },
   {
@@ -62,7 +62,7 @@ export const projects: Project[] = [
     links: [
       { label: "Code", href: repo("fleet-ops-dashboard") },
       {
-        label: "Demo",
+        label: "Video",
         href: demo("fleet-ops-dashboard", "fleet-ops-walkthrough.mp4"),
       },
     ],
@@ -100,8 +100,9 @@ export const projects: Project[] = [
       alt: "Visibility report showing which AI answers mention the business",
     },
     links: [
+      { label: "Live demo", href: "https://cited-gold.vercel.app" },
       { label: "Code", href: repo("cited") },
-      { label: "Demo", href: demo("cited", "cited-demo.mp4") },
+      { label: "Video", href: demo("cited", "cited-demo.mp4") },
     ],
   },
   {
@@ -116,8 +117,9 @@ export const projects: Project[] = [
       alt: "Ledger dashboard with debt balances and the projected debt-free date",
     },
     links: [
+      { label: "Live demo", href: "https://ledger-eta-teal.vercel.app" },
       { label: "Code", href: repo("ledger-core") },
-      { label: "Demo", href: demo("ledger-core", "ledger-demo.mp4") },
+      { label: "Video", href: demo("ledger-core", "ledger-demo.mp4") },
     ],
   },
   {
@@ -132,8 +134,9 @@ export const projects: Project[] = [
       alt: "Flight search results with fares from several partners side by side",
     },
     links: [
+      { label: "Live demo", href: "https://flyt-beryl.vercel.app" },
       { label: "Code", href: repo("flyt") },
-      { label: "Demo", href: demo("flyt", "flyt-demo.mp4") },
+      { label: "Video", href: demo("flyt", "flyt-demo.mp4") },
     ],
   },
   {
@@ -157,7 +160,7 @@ export const projects: Project[] = [
     },
     links: [
       { label: "Code", href: repo("divido") },
-      { label: "Demo", href: demo("divido", "divido-demo.mp4") },
+      { label: "Video", href: demo("divido", "divido-demo.mp4") },
     ],
   },
   {
@@ -174,7 +177,7 @@ export const projects: Project[] = [
     links: [
       { label: "Code", href: repo("waypoint-chrome-ext") },
       {
-        label: "Demo",
+        label: "Video",
         href: demo("waypoint-chrome-ext", "waypoint-demo.webm"),
       },
     ],
@@ -197,8 +200,9 @@ export const projects: Project[] = [
       alt: "Postpilot composer drafting a LinkedIn post",
     },
     links: [
+      { label: "Live demo", href: "https://postpilot-ten-liard.vercel.app" },
       { label: "Code", href: repo("postpilot") },
-      { label: "Demo", href: demo("postpilot", "postpilot-demo.mp4") },
+      { label: "Video", href: demo("postpilot", "postpilot-demo.mp4") },
     ],
   },
 ];
