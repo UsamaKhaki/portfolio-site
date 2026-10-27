@@ -1,9 +1,26 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { liveProducts } from "@/content/products";
 import { projects } from "@/content/projects";
 import Home from "./page";
 
 describe("Home page", () => {
+  it("lists every live product with a link to its site", () => {
+    render(<Home />);
+
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Live products" }),
+    ).toBeInTheDocument();
+    for (const product of liveProducts) {
+      expect(
+        screen.getByRole("heading", { level: 4, name: product.name }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: new RegExp(product.domain) }),
+      ).toHaveAttribute("href", product.url);
+    }
+  });
+
   it("has one h1 and a heading for every section", () => {
     render(<Home />);
 

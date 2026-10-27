@@ -2,11 +2,46 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { experience, formatPeriod } from "./experience";
+import { liveProducts } from "./products";
 import { profile } from "./profile";
 import { projects } from "./projects";
 import { skillGroups } from "./skills";
 
-const allCopy = JSON.stringify({ profile, projects, experience, skillGroups });
+const allCopy = JSON.stringify({
+  profile,
+  projects,
+  liveProducts,
+  experience,
+  skillGroups,
+});
+
+describe("live products", () => {
+  it("links each product to its own https site, matching its domain", () => {
+    for (const product of liveProducts) {
+      const url = new URL(product.url);
+      expect(url.protocol, product.slug).toBe("https:");
+      expect(url.hostname.replace(/^www\./, ""), product.slug).toBe(
+        product.domain,
+      );
+    }
+  });
+
+  it("has unique slugs and no overlap with the code projects", () => {
+    const slugs = liveProducts.map((product) => product.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+    for (const slug of slugs) {
+      expect(projects.some((project) => project.slug === slug)).toBe(false);
+    }
+  });
+
+  it("does not claim traffic numbers the site cannot back up", () => {
+    for (const product of liveProducts) {
+      expect(product.description, product.slug).not.toMatch(
+        /\b\d[\d,.]*\s*[KkMm]?\+?\s*(users|visits|visitors|downloads)\b/,
+      );
+    }
+  });
+});
 
 describe("projects", () => {
   it("features exactly three projects, shown first", () => {
