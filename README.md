@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# usamakhaki.com
 
-## Getting Started
+Personal portfolio of Usama Khaki, Senior Software Engineer in Dubai. One static page: hero, selected projects, experience, skills and contact.
 
-First, run the development server:
+Built with Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS 4. There is no backend, database or CMS: all content lives in typed files under `src/content`, and the page is prerendered at build time.
+
+## Getting started
+
+Requires Node 22 (see `.nvmrc`).
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The dev server runs on [http://localhost:7101](http://localhost:7101).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script                            | What it does                                                 |
+| --------------------------------- | ------------------------------------------------------------ |
+| `npm run dev`                     | Dev server on port 7101                                      |
+| `npm run build`                   | Production build (every route is static)                     |
+| `npm start`                       | Serve the production build on port 7101                      |
+| `npm run lint`                    | ESLint with the Next.js core web vitals and TypeScript rules |
+| `npm run typecheck`               | `tsc --noEmit`                                               |
+| `npm test`                        | Vitest and React Testing Library, run once                   |
+| `npm run format` / `format:check` | Prettier with the Tailwind class sorter                      |
 
-## Learn More
+CI (`.github/workflows/ci.yml`) runs lint, format check, typecheck, tests and build on every push to `main` and on pull requests.
 
-To learn more about Next.js, take a look at the following resources:
+## Editing content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| File                        | Holds                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------- |
+| `src/content/profile.ts`    | Name, role, summary, availability, links, optional CV and photo paths            |
+| `src/content/projects.ts`   | Project cards. `featured` puts a card in the top row, `live` adds the Live badge |
+| `src/content/experience.ts` | Roles, newest first. Wording matches the CV                                      |
+| `src/content/skills.ts`     | Skill groups                                                                     |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Screenshots live in `public/projects/` and come from each project's own `docs/screenshots` folder.
 
-## Deploy on Vercel
+- **Photo:** put the image in `public/` and set `profile.photo`. Until then the hero shows initials.
+- **CV:** put the PDF in `public/` and set `profile.cvUrl`. Until then the hero shows "Contact me" instead of "Download CV".
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`src/content/content.test.ts` guards a few rules: every public project links to its repo, only Tools Hubs is marked live, every screenshot file exists, and the copy has no em dashes or unbacked metrics.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Design notes
+
+- Light and dark themes. The theme follows the system setting until the visitor picks one with the toggle, and an inline script applies it before first paint so the page does not flash.
+- Accessibility: skip link, one `h1`, labelled sections, visible focus rings, 44px touch targets, screen reader text on icon links and on links that open a new tab, and reduced motion respected.
+- SEO: page metadata, a generated Open Graph image, `sitemap.xml`, `robots.txt` and a schema.org `Person` record. Set `NEXT_PUBLIC_SITE_URL` if the site is not served from `https://usamakhaki.com`.
+
+## Deployment
+
+Not deployed yet. The build output is fully static, so any Node host or Vercel works.
