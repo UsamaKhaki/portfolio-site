@@ -10,7 +10,7 @@ function Portrait() {
         alt={`Portrait of ${profile.name}`}
         fill
         priority
-        sizes="(min-width: 900px) 480px, 90vw"
+        sizes="(min-width: 768px) 480px, 176px"
         className="object-cover"
       />
     );
@@ -19,7 +19,7 @@ function Portrait() {
   return (
     <span
       aria-hidden="true"
-      className="text-ink-muted/60 text-[120px] font-extrabold tracking-tighter"
+      className="text-ink-muted/60 text-5xl font-extrabold tracking-tighter md:text-[120px]"
     >
       UK
     </span>
@@ -30,7 +30,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="mx-auto grid max-w-6xl items-center gap-16 px-4 pt-10 sm:px-8 sm:pt-16 md:grid-cols-[1.15fr_1fr]"
+      className="mx-auto grid max-w-6xl items-center gap-8 px-4 pt-8 sm:px-8 sm:pt-16 md:grid-cols-[1.15fr_1fr] md:gap-16"
     >
       <div>
         <h1 className="text-[clamp(2.5rem,5.4vw,4rem)] leading-[1.05] font-extrabold tracking-[-0.035em] text-balance">
@@ -84,22 +84,23 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Kept small on phones so the projects are not pushed a full screen down. */}
-      <div className="relative mx-auto w-full max-w-[300px] pr-6 pb-6 md:max-w-[480px]">
+      {/* On phones the photo moves above the headline at a compact size, and the badges
+          are dropped because the summary already says where and how long. */}
+      <div className="relative order-first w-36 pr-3 pb-3 sm:w-44 md:order-none md:mx-auto md:w-full md:max-w-[480px] md:pr-6 md:pb-6">
         <div
           aria-hidden="true"
-          className="bg-accent absolute right-0 bottom-0 h-[88%] w-[88%] rounded-[32px] opacity-90"
+          className="bg-accent absolute right-0 bottom-0 h-[88%] w-[88%] rounded-3xl opacity-90 md:rounded-[32px]"
         />
-        <div className="bg-surface-muted relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-[32px]">
+        <div className="bg-surface-muted relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-3xl md:rounded-[32px]">
           <Portrait />
         </div>
-        <div className="bg-surface shadow-lift absolute bottom-16 -left-2 rounded-2xl px-[18px] py-3.5 sm:-left-7">
+        <div className="bg-surface shadow-lift absolute bottom-16 -left-7 hidden rounded-2xl px-[18px] py-3.5 md:block">
           <p className="text-[26px] leading-tight font-extrabold">10+ yrs</p>
           <p className="text-ink-muted mt-0.5 text-[13px]">
             since {profile.careerStart}
           </p>
         </div>
-        <p className="bg-surface shadow-lift absolute top-10 -right-2 rounded-2xl px-4 py-3 text-sm font-bold">
+        <p className="bg-surface shadow-lift absolute top-10 -right-2 hidden rounded-2xl px-4 py-3 text-sm font-bold md:block">
           {profile.location}
         </p>
       </div>
