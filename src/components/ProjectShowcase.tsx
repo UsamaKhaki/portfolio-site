@@ -2,11 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { projects } from "@/content/projects";
+import { showcaseItems } from "@/content/showcase";
 import { ExternalLink } from "./ExternalLink";
 import type { ProjectShowcaseScene } from "./projectShowcaseScene";
-
-const featured = projects.filter((project) => project.featured);
 
 // Textures go through the Next.js image optimizer, so the 3D scene gets the same
 // resized, modern-format files as the rest of the page.
@@ -18,7 +16,10 @@ export function ProjectShowcase() {
   const [sceneReady, setSceneReady] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<ProjectShowcaseScene | null>(null);
+  // Mirrors `active` so a scene created later starts on the tab picked before it loaded.
+  const activeRef = useRef(active);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabRowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -34,7 +35,7 @@ export function ProjectShowcase() {
             if (cancelled) return;
             sceneRef.current = createProjectShowcaseScene(
               container,
-              featured.map((project) => textureUrl(project.image.src)),
+              showcaseItems.map((item) => textureUrl(item.image.src)),
               {
                 onSelect: setActive,
                 onReady: () => setSceneReady(true),
@@ -43,6 +44,7 @@ export function ProjectShowcase() {
                 ).matches,
               },
             );
+            sceneRef.current?.setActive(activeRef.current);
           },
         );
       },
@@ -59,12 +61,31 @@ export function ProjectShowcase() {
   }, []);
 
   useEffect(() => {
+    activeRef.current = active;
     sceneRef.current?.setActive(active);
+
+    // On phones the tabs are one scrolling row; keep the selected tab in view there
+    // without scrolling the page itself.
+    const row = tabRowRef.current;
+    const tab = tabRefs.current[active];
+    if (!row || !tab) return;
+    const hidden =
+      tab.offsetLeft < row.scrollLeft ||
+      tab.offsetLeft + tab.offsetWidth > row.scrollLeft + row.clientWidth;
+    if (hidden) {
+      const reduce = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      row.scrollTo({
+        left: Math.max(0, tab.offsetLeft - 16),
+        behavior: reduce ? "auto" : "smooth",
+      });
+    }
   }, [active]);
 
   // Arrow keys, Home and End move between tabs, following the WAI-ARIA tabs pattern.
   const onTabKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    const last = featured.length - 1;
+    const last = showcaseItems.length - 1;
     const next = {
       ArrowRight: active === last ? 0 : active + 1,
       ArrowLeft: active === 0 ? last : active - 1,
@@ -77,20 +98,23 @@ export function ProjectShowcase() {
     tabRefs.current[next]?.focus();
   };
 
-  const current = featured[active];
+  const current = showcaseItems[active];
 
   return (
     // Three grid areas: on phones they stack as tabs, then the visual, then the panel;
     // on desktop the tabs and panel share the left column and the visual spans the right.
     <div className="grid gap-6 lg:grid-cols-[1fr_1.25fr] lg:grid-rows-[auto_1fr] lg:gap-x-10 lg:gap-y-8">
-      <div className="relative order-1 -mx-4 [scrollbar-width:none] overflow-x-auto px-4 sm:mx-0 sm:px-0 lg:col-start-1 lg:row-start-1 lg:self-end">
+      <div
+        ref={tabRowRef}
+        className="relative order-1 -mx-4 [scrollbar-width:none] overflow-x-auto px-4 sm:mx-0 sm:px-0 lg:col-start-1 lg:row-start-1 lg:self-end"
+      >
         <div
           role="tablist"
-          aria-label="Featured projects"
+          aria-label="Featured work"
           className="flex w-max gap-2 sm:w-auto sm:flex-wrap"
           onKeyDown={onTabKeyDown}
         >
-          {featured.map((project, i) => (
+          {showcaseItems.map((project, i) => (
             <button
               key={project.slug}
               ref={(el) => {
@@ -112,7 +136,7 @@ export function ProjectShowcase() {
       </div>
 
       <div className="order-3 lg:col-start-1 lg:row-start-2">
-        {featured.map((project, i) => (
+        {showcaseItems.map((project, i) => (
           <div
             key={project.slug}
             role="tabpanel"
@@ -132,10 +156,20 @@ export function ProjectShowcase() {
                 </span>
               )}
             </h3>
+            {(project.traffic || project.codePrivate) && (
+              <p className="text-ink-muted mt-2 text-sm font-semibold">
+                {[project.traffic, project.codePrivate && "Code is private"]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
+            )}
             <p className="text-ink-muted mt-3 max-w-xl leading-relaxed">
               {project.description}
             </p>
-            <ul aria-label="Tech stack" className="mt-5 flex flex-wrap gap-1.5">
+            <ul
+              aria-label={project.tagsLabel}
+              className="mt-5 flex flex-wrap gap-1.5"
+            >
               {project.tags.map((tag) => (
                 <li
                   key={tag}

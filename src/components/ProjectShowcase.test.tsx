@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { projects } from "@/content/projects";
+import { showcaseItems } from "@/content/showcase";
 import { ProjectShowcase } from "./ProjectShowcase";
 
-const featured = projects.filter((project) => project.featured);
+const featured = showcaseItems;
 
 // jsdom has no WebGL, so these tests cover the tabs and panels, which carry all the content.
 describe("ProjectShowcase", () => {
-  it("has one tab per featured project, with the first selected", () => {
+  it("has one tab per showcase item, with the first selected", () => {
     render(<ProjectShowcase />);
 
     const tabs = screen.getAllByRole("tab");
@@ -44,16 +44,17 @@ describe("ProjectShowcase", () => {
     expect(tabs[1]).toHaveAttribute("aria-selected", "true");
     expect(tabs[1]).toHaveFocus();
 
+    const last = tabs[tabs.length - 1];
     fireEvent.keyDown(tabs[1], { key: "End" });
-    expect(tabs[2]).toHaveFocus();
+    expect(last).toHaveFocus();
 
-    fireEvent.keyDown(tabs[2], { key: "ArrowRight" });
+    fireEvent.keyDown(last, { key: "ArrowRight" });
     expect(tabs[0]).toHaveAttribute("aria-selected", "true");
 
     fireEvent.keyDown(tabs[0], { key: "ArrowLeft" });
-    expect(tabs[2]).toHaveFocus();
+    expect(last).toHaveFocus();
 
-    fireEvent.keyDown(tabs[2], { key: "Home" });
+    fireEvent.keyDown(last, { key: "Home" });
     expect(tabs[0]).toHaveFocus();
   });
 
@@ -77,5 +78,29 @@ describe("ProjectShowcase", () => {
     expect(
       screen.getByRole("link", { name: /Live site for Tools Hubs/ }),
     ).toHaveAttribute("href", "https://uaetoolshub.com");
+  });
+
+  it("shows live products with their traffic, a live link and no code link", () => {
+    render(<ProjectShowcase />);
+
+    fireEvent.click(screen.getByRole("tab", { name: "downloadvideo.cc" }));
+
+    const panel = screen.getByRole("tabpanel");
+    expect(panel).toHaveTextContent("10K+ monthly visitors · Code is private");
+    expect(
+      screen.getByRole("link", { name: /Live site for downloadvideo.cc/ }),
+    ).toHaveAttribute("href", "https://downloadvideo.cc");
+    expect(screen.queryByRole("link", { name: /^Code/ })).toBeNull();
+    expect(screen.getByRole("list", { name: "Features" })).toBeInTheDocument();
+  });
+
+  it("does not show a traffic line for products without a confirmed figure", () => {
+    render(<ProjectShowcase />);
+
+    fireEvent.click(screen.getByRole("tab", { name: "W-Meet" }));
+
+    const panel = screen.getByRole("tabpanel");
+    expect(panel).toHaveTextContent("Code is private");
+    expect(panel).not.toHaveTextContent(/visitors/);
   });
 });

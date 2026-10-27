@@ -12,6 +12,7 @@ type SceneOptions = {
   reducedMotion: boolean;
 };
 
+const MAX_BEHIND = 3;
 const WINDOW_WIDTH = 2.4;
 const WINDOW_HEIGHT = 1.5;
 
@@ -156,12 +157,16 @@ export function createProjectShowcaseScene(
   // Moves each window toward its slot in the stack; k = 1 snaps straight there.
   const layout = (k: number) => {
     planes.forEach((mesh, i) => {
-      const depth = (i - active + planes.length) % planes.length; // 0 is the front window
+      const order = (i - active + planes.length) % planes.length; // 0 is the front window
+      // Only the front window and a few behind it are drawn. The rest wait, hidden, in the
+      // last slot so they slide forward from the back of the stack when picked.
+      const depth = Math.min(order, MAX_BEHIND);
+      mesh.visible = order <= MAX_BEHIND;
       const float = reducedMotion ? 0 : Math.sin(time * 0.8 + i * 1.7) * 0.02;
       const target = {
-        x: depth * (0.42 + spread * 0.35) - 0.35 - spread * 0.2,
-        y: depth * (0.16 + spread * 0.06) + 0.05 + float,
-        z: -depth * (0.55 + spread * 0.25),
+        x: depth * (0.36 + spread * 0.3) - 0.45 - spread * 0.2,
+        y: depth * (0.14 + spread * 0.05) + 0.02 + float,
+        z: -depth * (0.5 + spread * 0.22),
       };
       mesh.position.x += (target.x - mesh.position.x) * k;
       mesh.position.y += (target.y - mesh.position.y) * k;
@@ -169,7 +174,7 @@ export function createProjectShowcaseScene(
       mesh.rotation.y += (-0.32 - spread * 0.08 - mesh.rotation.y) * k;
       mesh.rotation.x += (-0.06 - mesh.rotation.x) * k;
       const dim = mesh.material.uniforms.uDim;
-      dim.value += (depth * 0.3 - dim.value) * k;
+      dim.value += (depth * 0.25 - dim.value) * k;
       mesh.renderOrder = planes.length - depth;
     });
   };

@@ -5,19 +5,13 @@ import { projects } from "@/content/projects";
 import Home from "./page";
 
 describe("Home page", () => {
-  it("lists every live product with a link to its site", () => {
+  it("shows every live product as a tab in the showcase", () => {
     render(<Home />);
 
-    expect(
-      screen.getByRole("heading", { level: 3, name: "Live products" }),
-    ).toBeInTheDocument();
     for (const product of liveProducts) {
       expect(
-        screen.getByRole("heading", { level: 4, name: product.name }),
+        screen.getByRole("tab", { name: product.name }),
       ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: new RegExp(product.domain) }),
-      ).toHaveAttribute("href", product.url);
     }
   });
 

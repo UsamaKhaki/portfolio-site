@@ -34,7 +34,25 @@ describe("live products", () => {
     }
   });
 
-  it("does not claim traffic numbers the site cannot back up", () => {
+  it("has a screenshot file for every product", () => {
+    for (const product of liveProducts) {
+      expect(
+        existsSync(join(process.cwd(), "public", product.image.src)),
+        product.image.src,
+      ).toBe(true);
+    }
+  });
+
+  it("keeps traffic in its own rounded field, in one consistent format", () => {
+    for (const product of liveProducts) {
+      if (product.traffic === undefined) continue;
+      expect(product.traffic, product.slug).toMatch(
+        /^\d+K\+ monthly visitors$/,
+      );
+    }
+  });
+
+  it("does not put traffic numbers in the descriptions", () => {
     for (const product of liveProducts) {
       expect(product.description, product.slug).not.toMatch(
         /\b\d[\d,.]*\s*[KkMm]?\+?\s*(users|visits|visitors|downloads)\b/,

@@ -1,6 +1,5 @@
 import { moreOnGitHub, projects } from "@/content/projects";
 import { ExternalLink } from "./ExternalLink";
-import { LiveProducts } from "./LiveProducts";
 import { ProjectCard } from "./ProjectCard";
 import { ProjectShowcase } from "./ProjectShowcase";
 import { SectionHeading } from "./SectionHeading";
@@ -16,17 +15,16 @@ export function Projects() {
     >
       <SectionHeading
         id="projects-title"
-        eyebrow="Featured projects"
+        eyebrow="Featured work"
         title="Recent work"
         aside={
           <p className="text-ink-muted max-w-sm text-[15px] leading-relaxed">
-            Open-source projects link to their code on GitHub. Tools Hubs and
-            the live products run in production.
+            Open-source projects and the products I run in production. Projects
+            with public code link to GitHub.
           </p>
         }
       />
       <ProjectShowcase />
-      <LiveProducts />
 
       <div className="mt-16 mb-6 flex items-baseline justify-between gap-4 sm:mt-20">
         <h3
