@@ -60,6 +60,7 @@ export const projects: Project[] = [
       alt: "Live map of vehicles around five sites with one vehicle selected",
     },
     links: [
+      { label: "Live demo", href: "https://fleet-ops-mu.vercel.app" },
       { label: "Code", href: repo("fleet-ops-dashboard") },
       {
         label: "Video",
