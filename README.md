@@ -40,7 +40,7 @@ CI (`.github/workflows/ci.yml`) runs lint, format check, typecheck, tests and bu
 
 Screenshots live in `public/projects/` and come from each project's own `docs/screenshots` folder.
 
-- **Photo:** put the image in `public/` and set `profile.photo`. Until then the hero shows initials.
+- **Photo:** `public/usama-khaki.jpg`, set in `profile.photo`. Set it to `null` to show initials instead.
 - **CV:** put the PDF in `public/` and set `profile.cvUrl`. Until then the hero shows "Contact me" instead of "Download CV".
 
 `src/content/content.test.ts` guards a few rules: every public project links to its repo, only Tools Hubs is marked live, every screenshot file exists, and the copy has no em dashes or unbacked metrics.

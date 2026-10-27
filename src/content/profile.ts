@@ -12,5 +12,5 @@ export const profile = {
   // Set to a file in /public (e.g. "/usama-khaki-cv.pdf") to show the download buttons.
   cvUrl: null as string | null,
   // Set to an image in /public (e.g. "/usama-khaki.jpg") to replace the initials.
-  photo: null as string | null,
+  photo: "/usama-khaki.jpg" as string | null,
 };
