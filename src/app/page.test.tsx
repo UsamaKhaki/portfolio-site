@@ -1,0 +1,67 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { projects } from "@/content/projects";
+import Home from "./page";
+
+describe("Home page", () => {
+  it("has one h1 and a heading for every section", () => {
+    render(<Home />);
+
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    for (const name of [
+      "Recent work",
+      "Where I have worked",
+      "What I work with",
+      /Hiring a senior/,
+    ]) {
+      expect(
+        screen.getByRole("heading", { level: 2, name }),
+      ).toBeInTheDocument();
+    }
+  });
+
+  it("renders a card for every project", () => {
+    render(<Home />);
+
+    for (const project of projects) {
+      expect(
+        screen.getByRole("heading", { level: 3, name: project.title }),
+      ).toBeInTheDocument();
+    }
+  });
+
+  it("lets keyboard users skip the header", () => {
+    render(<Home />);
+
+    expect(
+      screen.getByRole("link", { name: "Skip to content" }),
+    ).toHaveAttribute("href", "#main");
+    expect(screen.getByRole("main")).toHaveAttribute("id", "main");
+  });
+
+  it("points every in-page link at a section that exists", () => {
+    const { container } = render(<Home />);
+
+    const targets = [
+      ...container.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'),
+    ].map((link) => link.getAttribute("href")!.slice(1));
+    for (const id of new Set(targets)) {
+      expect(container.querySelector(`#${id}`), `#${id}`).not.toBeNull();
+    }
+  });
+
+  it("offers email, LinkedIn and GitHub as contact options", () => {
+    render(<Home />);
+
+    expect(screen.getByRole("link", { name: "Email me" })).toHaveAttribute(
+      "href",
+      "mailto:khakiu.uk@gmail.com",
+    );
+    expect(
+      screen.getAllByRole("link", { name: /LinkedIn/ }).length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByRole("link", { name: /GitHub/ }).length,
+    ).toBeGreaterThan(0);
+  });
+});
