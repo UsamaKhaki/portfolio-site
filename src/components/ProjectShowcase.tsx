@@ -83,7 +83,7 @@ export function ProjectShowcase() {
     // Three grid areas: on phones they stack as tabs, then the visual, then the panel;
     // on desktop the tabs and panel share the left column and the visual spans the right.
     <div className="grid gap-6 lg:grid-cols-[1fr_1.25fr] lg:grid-rows-[auto_1fr] lg:gap-x-10 lg:gap-y-8">
-      <div className="order-1 -mx-4 [scrollbar-width:none] overflow-x-auto px-4 sm:mx-0 sm:px-0 lg:col-start-1 lg:row-start-1 lg:self-end">
+      <div className="relative order-1 -mx-4 [scrollbar-width:none] overflow-x-auto px-4 sm:mx-0 sm:px-0 lg:col-start-1 lg:row-start-1 lg:self-end">
         <div
           role="tablist"
           aria-label="Featured projects"
