@@ -1,6 +1,5 @@
 import { skillGroups } from "@/content/skills";
 import { SectionHeading } from "./SectionHeading";
-import { StackGraph } from "./StackGraph";
 
 export function Skills() {
   return (
@@ -13,16 +12,7 @@ export function Skills() {
         id="skills-title"
         eyebrow="Skills"
         title="What I work with"
-        aside={
-          <p className="text-ink-muted max-w-sm text-[15px] leading-relaxed">
-            The graph is built from the tech tags on the project cards above.
-          </p>
-        }
       />
-      <StackGraph />
-      <h3 className="mt-16 mb-6 text-2xl font-extrabold tracking-tight">
-        Full skill list
-      </h3>
       <dl className="border-line bg-surface divide-line divide-y rounded-[20px] border">
         {skillGroups.map((group) => (
           <div
