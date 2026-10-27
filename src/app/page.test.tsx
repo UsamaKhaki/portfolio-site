@@ -20,13 +20,19 @@ describe("Home page", () => {
     }
   });
 
-  it("renders a card for every project", () => {
+  it("shows featured projects as tabs and the rest as cards", () => {
     render(<Home />);
 
     for (const project of projects) {
-      expect(
-        screen.getByRole("heading", { level: 3, name: project.title }),
-      ).toBeInTheDocument();
+      if (project.featured) {
+        expect(
+          screen.getByRole("tab", { name: project.title }),
+        ).toBeInTheDocument();
+      } else {
+        expect(
+          screen.getByRole("heading", { level: 3, name: project.title }),
+        ).toBeInTheDocument();
+      }
     }
   });
 

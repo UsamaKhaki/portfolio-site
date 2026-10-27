@@ -1,10 +1,10 @@
 import { moreOnGitHub, projects } from "@/content/projects";
 import { ExternalLink } from "./ExternalLink";
 import { ProjectCard } from "./ProjectCard";
+import { ProjectShowcase } from "./ProjectShowcase";
 import { SectionHeading } from "./SectionHeading";
 
 export function Projects() {
-  const featured = projects.filter((project) => project.featured);
   const others = projects.filter((project) => !project.featured);
 
   return (
@@ -24,18 +24,36 @@ export function Projects() {
           </p>
         }
       />
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {featured.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
-      </div>
+      <ProjectShowcase />
 
-      <h3 className="mt-20 mb-6 text-2xl font-extrabold tracking-tight">
-        More projects
-      </h3>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-16 mb-6 flex items-baseline justify-between gap-4 sm:mt-20">
+        <h3
+          id="more-projects"
+          className="text-2xl font-extrabold tracking-tight"
+        >
+          More projects
+        </h3>
+        <p
+          className="text-ink-muted text-sm font-semibold sm:hidden"
+          aria-hidden="true"
+        >
+          Swipe →
+        </p>
+      </div>
+      {/* Phones get a swipeable row with the next card peeking in; larger screens a grid. */}
+      <div
+        role="region"
+        aria-labelledby="more-projects"
+        tabIndex={0}
+        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3"
+      >
         {others.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
+          <div
+            key={project.slug}
+            className="flex w-[85%] shrink-0 snap-start sm:w-auto"
+          >
+            <ProjectCard project={project} />
+          </div>
         ))}
       </div>
 

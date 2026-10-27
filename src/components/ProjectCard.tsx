@@ -6,7 +6,7 @@ export function ProjectCard({ project }: { project: Project }) {
   const { image } = project;
 
   return (
-    <article className="group border-line bg-surface hover:shadow-lift flex flex-col overflow-hidden rounded-[20px] border transition duration-200 hover:-translate-y-1 motion-reduce:hover:translate-y-0">
+    <article className="group border-line bg-surface hover:shadow-lift flex w-full flex-col overflow-hidden rounded-[20px] border transition duration-200 hover:-translate-y-1 motion-reduce:hover:translate-y-0">
       <div className="bg-accent-soft relative aspect-[16/10] overflow-hidden">
         <Image
           src={image.src}
