@@ -33,10 +33,6 @@ export function Hero() {
       className="mx-auto grid max-w-6xl items-center gap-16 px-4 pt-10 sm:px-8 sm:pt-16 md:grid-cols-[1.15fr_1fr]"
     >
       <div>
-        <p className="bg-accent-soft text-accent-ink mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-bold">
-          <span className="bg-accent size-2 rounded-full" aria-hidden="true" />
-          {profile.availability}
-        </p>
         <h1 className="text-[clamp(2.5rem,5.4vw,4rem)] leading-[1.05] font-extrabold tracking-[-0.035em] text-balance">
           Hi, I&apos;m Usama.
           <br />I build frontends for{" "}
